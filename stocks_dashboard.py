@@ -11,6 +11,7 @@ import statsmodels.api as sm
 import tensorflow as tf
 from tensorflow.keras import layers, callbacks
 import openai
+from openai import OpenAI
 from dotenv import load_dotenv
 import os
 
@@ -367,7 +368,7 @@ def chat_answer(prompt: str):
             max_tokens=500
     )
 
-        return response['choices'][0]['message']['content'].strip()
+        return response.choices[0].message.content.strip()
     except Exception as e:
         return f"Error: {e}"
 # ----------------------------------------------------------------
