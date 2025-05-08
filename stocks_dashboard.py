@@ -10,7 +10,6 @@ from statsmodels.tsa.arima.model import ARIMA
 import statsmodels.api as sm
 import tensorflow as tf
 from tensorflow.keras import layers, callbacks
-import openai
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
@@ -20,7 +19,7 @@ import os
 # ----------------------------------------------------------------
 load_dotenv(dotenv_path="keys.env")  # explicitly load your keys.env file
 POLYGON_API_KEY = os.getenv("POLYGON_API_KEY")
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 BASE = "https://api.polygon.io"
 
 # ----------------------------------------------------------------
@@ -361,7 +360,7 @@ def fit_gru_model(series,  n_steps=60, epochs=20):
 # ----------------------------------------------------------------
 def chat_answer(prompt: str):
     try:
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-3.5-turbo-1106",   # Using "gpt-3.5-turbo-1106"
             messages=[{"role": "user", "content": prompt}],
             temperature=0.3,
